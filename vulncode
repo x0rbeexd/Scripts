@@ -1,0 +1,22 @@
+import os
+from django.core.files.storage import default_storage
+from django.shortcuts import render
+from django.http import HttpResponse
+from django.db import connection
+
+def vulnerable_sql(request):
+    name = request.GET.get('name', '')
+    query = f"SELECT * FROM challenge_app_user WHERE name = '{name}'"
+    with connection.cursor() as cursor:
+        cursor.execute(query)
+        result = cursor.fetchall()
+    return HttpResponse(f"Result: {result}")
+ 
+def vulnerable_upload(request):
+    if request.method == 'POST' and request.FILES.get('image'):
+        image = request.FILES['image']
+        path = default_storage.save('uploads/' + image.name, image)
+        # Unsafe command execution
+        os.system(f"echo Processing {path}")
+        return HttpResponse("Image processed.")
+    return render(request, 'index.html')
