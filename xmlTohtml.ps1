@@ -196,3 +196,6 @@ $html += @"
 # Write file
 Set-Content -Path $Out -Value $html -Force -Encoding UTF8
 Write-Host "Report written to $Out"
+
+
+.\NmapXmlToHtml.ps1 -XmlFile .\allports.xml -Out .\nmap-report.html -IncludePortsSummary
