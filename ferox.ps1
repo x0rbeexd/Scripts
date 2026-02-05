@@ -1,0 +1,12 @@
+.\feroxbuster.exe `
+  --url "http://target-url.com" `
+  --wordlist "C:\Path\To\SecLists\Discovery\Web-Content\IIS.fuzz.txt" `
+  --extensions bak old config rar zip aspx ashx txt `
+  --cookies "ASP.NET_SessionId=YOUR_SESSION_ID_HERE" `
+  --threads 10 `
+  --rate-limit 50 `
+  --status-codes 200 301 302 403 500 `
+  --collect-backups `
+  --auto-tune `
+  --output "scan_results.txt" `
+  --dont-filter
